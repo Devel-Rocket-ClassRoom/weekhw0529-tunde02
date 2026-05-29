@@ -1,6 +1,7 @@
 ﻿#include <iostream>
+#include "Homework01.h"
 
 int main()
 {
-    std::cout << "Hello World!\n";
+    Homework01_Run();
 }
