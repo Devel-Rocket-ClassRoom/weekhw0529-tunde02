@@ -17,7 +17,7 @@ void Homework01_Run()
 
         if (!IsValidInput(DateString))
         {
-            printf("[ERROR] 입력 형태가 잘못됐습니다!!\n");
+            printf("[ERROR] 잘못된 입력입니다!!\n\n");
             continue;
         }
 
@@ -47,8 +47,6 @@ void Homework01_Run()
         ModOfTotalDays %= 7;
 
         std::string DayString = EDay2String(static_cast<EDay>(ModOfTotalDays));
-
-        printf("total : %d\n", ModOfTotalDays);
         printf("[%d년 %d월 %d일]은 [%s]입니다.\n\n", Year, Month, Day, DayString.c_str());
     }
 
@@ -101,7 +99,7 @@ bool IsValidInput(const std::string& Input)
     YearNumber = std::stoi(Year);
 
     if (!CanStoUnsignedI(Month)
-        || !(0 < std::stoi(Month) || std::stoi(Month) < 13))
+        || !(0 < std::stoi(Month) && std::stoi(Month) < 13))
     {
         return false;
     }
@@ -131,8 +129,8 @@ bool CanStoUnsignedI(const std::string& String)
     }
 
     return String.length() < 11
-        && std::stoi(String.substr(0, 9)) <= INT32_MAX / 10
-        && std::stoi(String) > 0;
+        && ((String.length() == 10 && std::stoi(String.substr(0, 9)) <= INT32_MAX / 10)
+            || (String.length() < 10 && std::stoi(String.substr(0, 9)) <= INT32_MAX));
 }
 
 bool IsLeapYear(int Year)
