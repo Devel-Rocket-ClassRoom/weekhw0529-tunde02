@@ -57,11 +57,11 @@ void Homework01_Run()
 
 bool IsValidInput(const std::string& Input)
 {
-    // - 모든 입력은 글자, 0, 음수가 될 수 없다
-    // - 스페이스는 2번까지만 가능하다
-    // - 연도 1 ~ int의 최대값
-    // - 월은 1 ~ 12
-    // - 일은 기본적으로 1 ~ 31이지만, 월에 따라 다르다
+    // 1. 입력의 모든 문자는 숫자, 공백으로만 이루어져야 한다
+    // 2. 공백은 2개 존재해야만 한다
+    // 3. 연도는 1 ~ INT_MAX
+    // 4. 월은 1 ~ 12
+    // 5. 일은 월이 무엇인지에 따라 1 ~ 28 일수도, 1 ~ 31 일수도 있다
 
     // 글자 확인
     int SpaceCount = 0;
@@ -90,18 +90,28 @@ bool IsValidInput(const std::string& Input)
     std::string Year = Input.substr(0, FirstSpaceIndex);
     std::string Month = Input.substr(FirstSpaceIndex + 1, SecondSpaceIndex - FirstSpaceIndex - 1);
     std::string Day = Input.substr(SecondSpaceIndex + 1);
+    int YearNumber = 0;
+    int MonthNumber = 0;
 
     if (!CanStoUnsignedI(Year))
     {
         return false;
     }
 
-    if (!CanStoUnsignedI(Month) || !(0 < std::stoi(Month) || std::stoi(Month) < 13))
+    YearNumber = std::stoi(Year);
+
+    if (!CanStoUnsignedI(Month)
+        || !(0 < std::stoi(Month) || std::stoi(Month) < 13))
     {
         return false;
     }
 
-    if (!CanStoUnsignedI(Day) || !(0 < std::stoi(Day) || std::stoi(Day) < DaysOfMonth[std::stoi(Month)] + 1))
+    MonthNumber = std::stoi(Month);
+
+    if (!CanStoUnsignedI(Day)
+        || !(0 < std::stoi(Day)
+            && ((IsLeapYear(YearNumber) && std::stoi(Day) <= DaysOfMonthOfLeapYear[MonthNumber])
+                || (!IsLeapYear(YearNumber) && std::stoi(Day) <= DaysOfMonth[MonthNumber]))))
     {
         return false;
     }
